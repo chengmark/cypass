@@ -15,3 +15,8 @@ export const indexOfAny = (str: string, arr: string[]) => {
   }
   return result;
 };
+
+export const urlToName = (url: string) => {
+  let domain = new URL(url);
+  return domain.hostname;
+};

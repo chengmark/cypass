@@ -1,5 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { GetPasswordCSVInput } from './dto/GetPasswordCSVInput';
+import { urlToName } from 'src/utils';
+import { GetPasswordBulkInput } from './dto/GetPasswordBulkInput';
 import { GetPasswordInput } from './dto/GetPasswordInput';
 import { PasswordsService } from './passwords.service';
 
@@ -11,12 +12,22 @@ export class PasswordsController {
   @Post()
   getPassword(@Body() getPasswordInput: GetPasswordInput): string {
     console.log(getPasswordInput)
-    return this.passwordService.getPassword(getPasswordInput);
+    let csv = `name,url,username,password\n`
+    const {url, username} = getPasswordInput
+    const password = this.passwordService.getPassword(getPasswordInput);
+    csv += `${urlToName(url)},${url},${username},${password}\n`
+    return csv
   }
 
-  // @Post('csv')
-  // getPasswordCSV(@Body() getPasswordCSVInput: GetPasswordCSVInput): string {
-  //   getPasswordCSVInput.inputs.forEach()
-
-  // }
+  @Post('bulk')
+  getPasswordCSV(@Body() getPasswordBulkInput: GetPasswordBulkInput): string {
+    console.log({getPasswordBulkInput})
+    let csv = `name,url,username,password\n`
+    getPasswordBulkInput.inputs.forEach(input => {
+      const {url, username} = input
+      const password = this.passwordService.getPassword(input)
+      csv += `${urlToName(url)},${url},${username},${password}\n`
+    })
+    return csv
+  }
 }

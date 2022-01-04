@@ -26,7 +26,7 @@ export class PasswordsService{
     if(passwordConfig.withLower) choices = choices.concat(lowers)
     if(passwordConfig.withUpper) choices = choices.concat(uppers)
     
-    const hash = toDec(crypto.createHash('md5').update(input.text+input.service+input.last).digest("hex"))
+    const hash = toDec(crypto.createHash('md5').update(input.username+input.text+input.service+input.last).digest("hex"))
 
     for(let i = 1; i<=passwordConfig.length*2; i+=2){      
       let choiceIndex = Number.parseInt(hash[i-1] + hash[i])

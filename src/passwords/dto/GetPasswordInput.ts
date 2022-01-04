@@ -5,6 +5,13 @@ import { indexOfAny } from 'src/utils';
 
 export class GetPasswordInput {
   @IsString()
+  readonly url: string;
+
+  @IsString()
+  readonly username: string;
+
+  // below are for calculating password
+  @IsString()
   readonly text: string;
 
   @IsString()
